@@ -1,0 +1,747 @@
+/*
+Tema: Punteros - Listas y árboles
+Objetivos
+• Familiarizarse con el manejo de estructuras dinámicas lineales y arborescentes.
+• Comprender el papel de los punteros, valores y referencias en el desarrollo de funciones y procedimientos,
+recursivos e iterativos, en C y C++
+
+Listas
+NOTAS:
+I) En los siguientes ejercicios se debe buscar una solución iterativa y otra recursiva.
+II) Considere en cada caso la posibilidad de implementar una función o un procedimiento (salvo que se indique lo
+contrario).
+
+*/
+
+//EJERCICIOS listas: 
+//  Dada una lista lineal encadenada de enteros, implementar las siguientes operaciones:
+
+
+// primero voy a tener que definir la estructura básica para un nodo de la lista:
+
+struct Nodo {
+    int dato;
+    Nodo* siguiente;
+    Nodo(int valor) : dato(valor), siguiente(nullptr) {}
+};
+
+//EJERCICIO A) Insertar un elemento al principio
+//a.iterativo) Insertar un entero al ppio de una lista de forma iterativa
+
+//La solución iterativa crea un nuevo nodo y lo coloca al principio de la lista,
+// haciendo que el nuevo nodo apunte al nodo que antes era la cabeza de la lista.
+
+void insertarAlPrincipioIterativo(Nodo*& cabeza, int valor) {
+    Nodo* nuevoNodo = new Nodo(valor); // Crear el nuevo nodo
+    nuevoNodo->siguiente = cabeza;     // Apuntar el nuevo nodo a la cabeza actual
+    cabeza = nuevoNodo;                // Actualizar la cabeza para que sea el nuevo nodo
+}
+
+//a.recursivo) Insertar un entero al ppio de una lista de forma recursiva
+//Aunque insertar al principio se realiza típicamente de manera iterativa, se pude implementar recursivamente también,
+//pero la recursividad va a quedarmenos natural ya que no se hace una búsqueda profunda o una recorrida de la lista.
+
+void insertarAlPrincipioRecursivo(Nodo*& cabeza, int valor) {
+    if (cabeza == nullptr) {
+        cabeza = new Nodo(valor); // Crear un nuevo nodo si la lista está vacía
+    } else {
+        Nodo* nuevoNodo = new Nodo(valor); // Crear un nuevo nodo
+        nuevoNodo->siguiente = cabeza;     // Apuntar el nuevo nodo a la cabeza actual
+        cabeza = nuevoNodo;                // Actualizar la cabeza para que sea el nuevo nodo
+    }
+}
+
+// EJERCICIO A) pero esta vez resuelto en forma de funcion y en forma de procedimiento (iterativa y recursivamente):
+
+//en forma de Función (Retorna el nuevo nodo como la nueva cabeza):
+//Versión Iterativa:
+
+Nodo* insertarInicioFuncionIterativa(Nodo* cabeza, int nuevoDato) {
+    Nodo* nuevoNodo = new Nodo(nuevoDato);
+    nuevoNodo->siguiente = cabeza;
+    return nuevoNodo; // Retorna la nueva cabeza de la lista
+}
+
+//Versión Recursiva:
+
+Nodo* insertarInicioFuncionRecursiva(Nodo* cabeza, int nuevoDato) {
+    if (cabeza == nullptr) {
+        return new Nodo(nuevoDato); // Si la lista está vacía, crea el nodo como cabeza
+    } else {
+        Nodo* nuevoNodo = new Nodo(nuevoDato);
+        nuevoNodo->siguiente = cabeza;
+        return nuevoNodo; // Retorna la nueva cabeza de la lista
+    }
+}
+
+
+//en forma de Procedimiento (Modifica la lista por referencia):
+//Versión Iterativa
+
+void insertarInicioProcedimientoIterativo(Nodo*& cabeza, int nuevoDato) {
+    Nodo* nuevoNodo = new Nodo(nuevoDato);
+    nuevoNodo->siguiente = cabeza;
+    cabeza = nuevoNodo; // Actualiza la cabeza de la lista
+}
+
+//Versión Recursiva
+
+void insertarInicioProcedimientoRecursivo(Nodo*& cabeza, int nuevoDato) {
+    if (cabeza == nullptr) {
+        cabeza = new Nodo(nuevoDato); // Si la lista está vacía, crea el nodo como cabeza
+    } else {
+        Nodo* nuevoNodo = new Nodo(nuevoDato);
+        nuevoNodo->siguiente = cabeza;
+        cabeza = nuevoNodo; // Actualiza la cabeza de la lista
+    }
+}
+
+
+//conclusion:
+// Función: Retorna un puntero al nuevo nodo que se convierte en la nueva cabeza de la lista.
+//Procedimiento: Modifica directamente el puntero de la cabeza usando una referencia.
+//Ambas formas aseguran que el nuevo elemento se inserte al inicio de la lista.
+
+// EJERCICIO B) Eliminar el elemento de una lista no vacía en forma de funcion y de procedimiento (ambos de manera iterativa y recursiva):
+//uso la misma estructura del nodo para todos los ejercicios.
+
+//Eliminar el primer elemento de una lista no vacía
+//en forma de Función (Retorna la nueva cabeza de la lista):
+//Versión Iterativa:
+
+Nodo* eliminarInicioFuncionIterativa(Nodo* cabeza) {
+    if (cabeza == nullptr) return nullptr; // Si la lista está vacía, no se puede eliminar nada
+    Nodo* temp = cabeza;
+    cabeza = cabeza->siguiente;
+    delete temp; // Libera el nodo eliminado
+    return cabeza; // Retorna la nueva cabeza de la lista
+}
+
+// Versión Recursiva
+
+Nodo* eliminarInicioFuncionRecursiva(Nodo* cabeza) {
+    if (cabeza == nullptr) return nullptr; // Si la lista está vacía, no se puede eliminar nada
+    Nodo* temp = cabeza;
+    cabeza = cabeza->siguiente;
+    delete temp; // Libera el nodo eliminado
+    return cabeza; // Retorna la nueva cabeza de la lista
+}
+
+//en forma de Procedimiento (Modifica la lista por referencia):
+//Versión Iterativa :
+
+void eliminarInicioProcedimientoIterativo(Nodo*& cabeza) {
+    if (cabeza == nullptr) return; // Si la lista está vacía, no se puede eliminar nada
+    Nodo* temp = cabeza;
+    cabeza = cabeza->siguiente;
+    delete temp; // Libera el nodo eliminado
+}
+
+//Versión Recursiva:
+
+void eliminarInicioProcedimientoRecursivo(Nodo*& cabeza) {
+    if (cabeza == nullptr) return; // Si la lista está vacía, no se puede eliminar nada
+    Nodo* temp = cabeza;
+    cabeza = cabeza->siguiente;
+    delete temp; // Libera el nodo eliminado
+}
+
+/*
+conclusion: 
+Función: Retorna la nueva cabeza de la lista después de eliminar el primer nodo.
+Procedimiento: Modifica directamente el puntero de la cabeza usando una referencia.
+Ambas formas garantizan que el primer elemento de la lista sea eliminado correctamente y que la memoria sea liberada.
+*/
+
+// EJERCICIO C) Insertar un elemento en la posición K en forma de funcion y de procedimiento (ambos de manera iterativa y recursiva):
+
+//c) Insertar un elemento en la posición K
+//en forma de Función (Retorna la nueva cabeza de la lista):
+//Versión Iterativa:
+
+Nodo* insertarEnPosicionFuncionIterativa(Nodo* cabeza, int nuevoDato, int k) {
+    Nodo* nuevoNodo = new Nodo(nuevoDato);
+    
+    if (k == 0) { // Insertar al principio
+        nuevoNodo->siguiente = cabeza;
+        return nuevoNodo; // Retorna la nueva cabeza de la lista
+    }
+    
+    Nodo* actual = cabeza;
+    for (int i = 0; i < k - 1 && actual != nullptr; i++) {
+        actual = actual->siguiente;
+    }
+    
+    if (actual == nullptr) {
+        delete nuevoNodo; // Posición inválida
+        return cabeza;
+    }
+    
+    nuevoNodo->siguiente = actual->siguiente;
+    actual->siguiente = nuevoNodo;
+    
+    return cabeza;
+}
+
+//Versión Recursiva:
+Nodo* insertarEnPosicionFuncionRecursiva(Nodo* cabeza, int nuevoDato, int k) {
+    if (k == 0) { // Insertar al principio
+        Nodo* nuevoNodo = new Nodo(nuevoDato);
+        nuevoNodo->siguiente = cabeza;
+        return nuevoNodo; // Retorna la nueva cabeza
+    }
+    
+    if (cabeza == nullptr) return nullptr; // Posición inválida
+
+    cabeza->siguiente = insertarEnPosicionFuncionRecursiva(cabeza->siguiente, nuevoDato, k - 1);
+    return cabeza;
+}
+
+
+// en Forma de Procedimiento (Modifica la lista por referencia):
+// Versión Iterativa: 
+
+void insertarEnPosicionProcedimientoIterativo(Nodo*& cabeza, int nuevoDato, int k) {
+    Nodo* nuevoNodo = new Nodo(nuevoDato);
+
+    if (k == 0) { // Insertar al principio
+        nuevoNodo->siguiente = cabeza;
+        cabeza = nuevoNodo; // Actualiza la cabeza
+        return;
+    }
+    
+    Nodo* actual = cabeza;
+    for (int i = 0; i < k - 1 && actual != nullptr; i++) {
+        actual = actual->siguiente;
+    }
+    
+    if (actual == nullptr) {
+        delete nuevoNodo; // Posición inválida
+        return;
+    }
+
+    nuevoNodo->siguiente = actual->siguiente;
+    actual->siguiente = nuevoNodo;
+}
+
+
+//Versión Recursiva:
+
+void insertarEnPosicionProcedimientoRecursivo(Nodo*& cabeza, int nuevoDato, int k) {
+    if (k == 0) { // Insertar al principio
+        Nodo* nuevoNodo = new Nodo(nuevoDato);
+        nuevoNodo->siguiente = cabeza;
+        cabeza = nuevoNodo; // Actualiza la cabeza
+        return;
+    }
+
+    if (cabeza == nullptr) return; // Posición inválida
+
+    insertarEnPosicionProcedimientoRecursivo(cabeza->siguiente, nuevoDato, k - 1);
+}
+
+
+/*
+Función: Retorna la nueva cabeza de la lista (esto es útil si el nuevo nodo se inserta al principio).
+Procedimiento: Modifica directamente el puntero de la cabeza usando una referencia.
+*/
+
+// EJERCICIO D)  Eliminar el elemento que ocupa la posición K en forma de funcion y de procedimiento (ambos de manera iterativa y recursiva):
+
+// d) Eliminar el elemento en la posición K
+// en forma de Función (Retorna la nueva cabeza de la lista):
+// Versión Iterativa:
+
+Nodo* eliminarEnPosicionFuncionIterativa(Nodo* cabeza, int k) {
+    if (cabeza == nullptr) return nullptr; // Lista vacía
+
+    if (k == 0) { // Eliminar el primer nodo
+        Nodo* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        delete temp; // Libera el nodo eliminado
+        return cabeza; // Retorna la nueva cabeza
+    }
+    
+    Nodo* actual = cabeza;
+    for (int i = 0; i < k - 1 && actual->siguiente != nullptr; i++) {
+        actual = actual->siguiente;
+    }
+    
+    if (actual->siguiente == nullptr) return cabeza; // Posición fuera de rango
+
+    Nodo* temp = actual->siguiente;
+    actual->siguiente = temp->siguiente;
+    delete temp; // Libera el nodo eliminado
+    
+    return cabeza;
+}
+
+//Versión Recursiva:
+
+Nodo* eliminarEnPosicionFuncionRecursiva(Nodo* cabeza, int k) {
+    if (cabeza == nullptr) return nullptr; // Lista vacía
+
+    if (k == 0) { // Eliminar el primer nodo
+        Nodo* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        delete temp; // Libera el nodo eliminado
+        return cabeza;
+    }
+
+    cabeza->siguiente = eliminarEnPosicionFuncionRecursiva(cabeza->siguiente, k - 1);
+    return cabeza;
+}
+
+
+// en Forma de Procedimiento (Modifica la lista por referencia):
+// Versión Iterativa:
+
+void eliminarEnPosicionProcedimientoIterativo(Nodo*& cabeza, int k) {
+    if (cabeza == nullptr) return; // Lista vacía
+
+    if (k == 0) { // Eliminar el primer nodo
+        Nodo* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        delete temp; // Libera el nodo eliminado
+        return;
+    }
+
+    Nodo* actual = cabeza;
+    for (int i = 0; i < k - 1 && actual->siguiente != nullptr; i++) {
+        actual = actual->siguiente;
+    }
+
+    if (actual->siguiente == nullptr) return; // Posición fuera de rango
+
+    Nodo* temp = actual->siguiente;
+    actual->siguiente = temp->siguiente;
+    delete temp; // Libera el nodo eliminado
+}
+
+//Versión Recursiva
+
+void eliminarEnPosicionProcedimientoRecursivo(Nodo*& cabeza, int k) {
+    if (cabeza == nullptr) return; // Lista vacía
+
+    if (k == 0) { // Eliminar el primer nodo
+        Nodo* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        delete temp; // Libera el nodo eliminado
+        return;
+    }
+
+    eliminarEnPosicionProcedimientoRecursivo(cabeza->siguiente, k - 1);
+}
+
+/*
+Función: Retorna la nueva cabeza de la lista, lo que es útil si el nodo eliminado es el primero.
+Procedimiento: Modifica directamente el puntero de la cabeza usando una referencia.
+Cada versión garantiza que se elimine el nodo en la posición K indicada, liberando la memoria asociada a ese nodo para evitar fugas de memoria.
+*/
+
+// EJERCICIO E) Retornar el mínimo (máximo) de la lista (una referencia al nodo donde se encuentra) en forma de funcion y de procedimiento (ambos de manera iterativa y recursiva):
+
+//e) Retornar el nodo con el valor mínimo (máximo)
+//en forma de Función (Retorna un puntero al nodo con el valor mínimo/máximo):
+
+// Mínimo - Versión Iterativa:
+
+Nodo* encontrarMinimoFuncionIterativa(Nodo* cabeza) {
+    if (cabeza == nullptr) return nullptr; // Lista vacía
+
+    Nodo* minimo = cabeza;
+    Nodo* actual = cabeza->siguiente;
+
+    while (actual != nullptr) {
+        if (actual->dato < minimo->dato) {
+            minimo = actual;
+        }
+        actual = actual->siguiente;
+    }
+
+    return minimo;
+}
+
+// Mínimo - Versión Recursiva:
+
+Nodo* encontrarMinimoFuncionRecursiva(Nodo* cabeza, Nodo* minimo = nullptr) {
+    if (cabeza == nullptr) return minimo; // Fin de la lista
+
+    if (minimo == nullptr || cabeza->dato < minimo->dato) {
+        minimo = cabeza;
+    }
+
+    return encontrarMinimoFuncionRecursiva(cabeza->siguiente, minimo);
+}
+
+//Máximo - Versión Iterativa:
+
+Nodo* encontrarMaximoFuncionIterativa(Nodo* cabeza) {
+    if (cabeza == nullptr) return nullptr; // Lista vacía
+
+    Nodo* maximo = cabeza;
+    Nodo* actual = cabeza->siguiente;
+
+    while (actual != nullptr) {
+        if (actual->dato > maximo->dato) {
+            maximo = actual;
+        }
+        actual = actual->siguiente;
+    }
+
+    return maximo;
+}
+
+//Máximo - Versión Recursiva:
+
+Nodo* encontrarMaximoFuncionRecursiva(Nodo* cabeza, Nodo* maximo = nullptr) {
+    if (cabeza == nullptr) return maximo; // Fin de la lista
+
+    if (maximo == nullptr || cabeza->dato > maximo->dato) {
+        maximo = cabeza;
+    }
+
+    return encontrarMaximoFuncionRecursiva(cabeza->siguiente, maximo);
+}
+
+// en forma de Procedimiento (Modifica el puntero mínimo/máximo por referencia):
+// Mínimo - Versión Iterativa:
+
+void encontrarMinimoProcedimientoIterativa(Nodo* cabeza, Nodo*& minimo) {
+    if (cabeza == nullptr) {
+        minimo = nullptr; // Lista vacía
+        return;
+    }
+
+    minimo = cabeza;
+    Nodo* actual = cabeza->siguiente;
+
+    while (actual != nullptr) {
+        if (actual->dato < minimo->dato) {
+            minimo = actual;
+        }
+        actual = actual->siguiente;
+    }
+}
+
+// Mínimo - Versión Recursiva
+
+void encontrarMinimoProcedimientoRecursiva(Nodo* cabeza, Nodo*& minimo) {
+    if (cabeza == nullptr) return; // Fin de la lista
+
+    if (minimo == nullptr || cabeza->dato < minimo->dato) {
+        minimo = cabeza;
+    }
+
+    encontrarMinimoProcedimientoRecursiva(cabeza->siguiente, minimo);
+}
+
+// EJERCICIO F) Eliminar el mínimo (máximo) de la misma en forma de funcion y de procedimiento (ambos de manera iterativa y recursiva):
+
+//f) Eliminar el nodo con el valor mínimo (máximo)
+// en Forma de Función (Retorna la nueva cabeza de la lista):
+// Mínimo - Versión Iterativa:
+
+Nodo* eliminarMinimoFuncionIterativa(Nodo* cabeza) {
+    if (cabeza == nullptr) return nullptr; // Lista vacía
+
+    Nodo* minimo = cabeza;
+    Nodo* anteriorMinimo = nullptr;
+    Nodo* actual = cabeza;
+    Nodo* anterior = nullptr;
+
+    while (actual != nullptr) {
+        if (actual->dato < minimo->dato) {
+            minimo = actual;
+            anteriorMinimo = anterior;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    if (anteriorMinimo == nullptr) {
+        // El mínimo es el primer nodo
+        cabeza = cabeza->siguiente;
+    } else {
+        anteriorMinimo->siguiente = minimo->siguiente;
+    }
+
+    delete minimo; // Libera el nodo mínimo
+    return cabeza;
+}
+
+//Mínimo - Versión Recursiva:
+
+Nodo* eliminarMinimoFuncionRecursiva(Nodo* cabeza, Nodo* anterior = nullptr, Nodo* minimo = nullptr, Nodo* anteriorMinimo = nullptr) {
+    if (cabeza == nullptr) {
+        if (minimo == nullptr) return cabeza; // Lista vacía
+        if (anteriorMinimo == nullptr) {
+            // El mínimo es el primer nodo
+            cabeza = minimo->siguiente;
+        } else {
+            anteriorMinimo->siguiente = minimo->siguiente;
+        }
+        delete minimo; // Libera el nodo mínimo
+        return cabeza;
+    }
+
+    if (minimo == nullptr || cabeza->dato < minimo->dato) {
+        return eliminarMinimoFuncionRecursiva(cabeza->siguiente, cabeza, cabeza, anterior);
+    } else {
+        return eliminarMinimoFuncionRecursiva(cabeza->siguiente, cabeza, minimo, anteriorMinimo);
+    }
+}
+
+
+
+//Máximo - Versión Iterativa
+
+Nodo* eliminarMaximoFuncionIterativa(Nodo* cabeza) {
+    if (cabeza == nullptr) return nullptr; // Lista vacía
+
+    Nodo* maximo = cabeza;
+    Nodo* anteriorMaximo = nullptr;
+    Nodo* actual = cabeza;
+    Nodo* anterior = nullptr;
+
+    while (actual != nullptr) {
+        if (actual->dato > maximo->dato) {
+            maximo = actual;
+            anteriorMaximo = anterior;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    if (anteriorMaximo == nullptr) {
+        // El máximo es el primer nodo
+        cabeza = cabeza->siguiente;
+    } else {
+        anteriorMaximo->siguiente = maximo->siguiente;
+    }
+
+    delete maximo; // Libera el nodo máximo
+    return cabeza;
+}
+
+
+
+// Máximo - Versión Recursiva:
+
+Nodo* eliminarMaximoFuncionRecursiva(Nodo* cabeza, Nodo* anterior = nullptr, Nodo* maximo = nullptr, Nodo* anteriorMaximo = nullptr) {
+    if (cabeza == nullptr) {
+        if (maximo == nullptr) return nullptr; // Lista vacía
+        if (anteriorMaximo == nullptr) {
+            // El máximo es el primer nodo
+            cabeza = maximo->siguiente;
+        } else {
+            anteriorMaximo->siguiente = maximo->siguiente;
+        }
+        delete maximo; // Libera el nodo máximo
+        return cabeza;
+    }
+
+    if (maximo == nullptr || cabeza->dato > maximo->dato) {
+        return eliminarMaximoFuncionRecursiva(cabeza->siguiente, cabeza, cabeza, anterior);
+    } else {
+        return eliminarMaximoFuncionRecursiva(cabeza->siguiente, cabeza, maximo, anteriorMaximo);
+    }
+}
+
+
+//en Forma de Procedimiento (Modifica la lista por referencia):
+// Mínimo - Versión Iterativa:
+
+void eliminarMinimoProcedimientoIterativa(Nodo*& cabeza) {
+    if (cabeza == nullptr) return; // Lista vacía
+
+    Nodo* minimo = cabeza;
+    Nodo* anteriorMinimo = nullptr;
+    Nodo* actual = cabeza;
+    Nodo* anterior = nullptr;
+
+    while (actual != nullptr) {
+        if (actual->dato < minimo->dato) {
+            minimo = actual;
+            anteriorMinimo = anterior;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    if (anteriorMinimo == nullptr) {
+        cabeza = cabeza->siguiente;
+    } else {
+        anteriorMinimo->siguiente = minimo->siguiente;
+    }
+
+    delete minimo; // Libera el nodo mínimo
+}
+
+//Mínimo - Versión Recursiva:
+ 
+void eliminarMinimoProcedimientoRecursiva(Nodo*& cabeza, Nodo* anterior = nullptr, Nodo*& minimo = nullptr, Nodo*& anteriorMinimo = nullptr) {
+    if (cabeza == nullptr) {
+        if (minimo == nullptr) return; // Lista vacía
+        if (anteriorMinimo == nullptr) {
+            cabeza = minimo->siguiente;
+        } else {
+            anteriorMinimo->siguiente = minimo->siguiente;
+        }
+        delete minimo; // Libera el nodo mínimo
+        return;
+    }
+
+    if (minimo == nullptr || cabeza->dato < minimo->dato) {
+        minimo = cabeza;
+        anteriorMinimo = anterior;
+    }
+
+    eliminarMinimoProcedimientoRecursiva(cabeza->siguiente, cabeza, minimo, anteriorMinimo);
+}
+
+//Máximo - Versión Iterativa :
+
+void eliminarMaximoProcedimientoIterativa(Nodo*& cabeza) {
+    if (cabeza == nullptr) return; // Lista vacía
+
+    Nodo* maximo = cabeza;
+    Nodo* anteriorMaximo = nullptr;
+    Nodo* actual = cabeza;
+    Nodo* anterior = nullptr;
+
+    while (actual != nullptr) {
+        if (actual->dato > maximo->dato) {
+            maximo = actual;
+            anteriorMaximo = anterior;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    if (anteriorMaximo == nullptr) {
+        cabeza = cabeza->siguiente;
+    } else {
+        anteriorMaximo->siguiente = maximo->siguiente;
+    }
+
+    delete maximo; // Libera el nodo máximo
+}
+
+// Máximo - Versión Recursiva:
+
+void eliminarMaximoProcedimientoRecursiva(Nodo*& cabeza, Nodo* anterior = nullptr, Nodo*& maximo = nullptr, Nodo*& anteriorMaximo = nullptr) {
+    if (cabeza == nullptr) {
+        if (maximo == nullptr) return; // Lista vacía
+        if (anteriorMaximo == nullptr) {
+            cabeza = maximo->siguiente;
+        } else {
+            anteriorMaximo->siguiente = maximo->siguiente;
+        }
+        delete maximo; // Libera el nodo máximo
+        return;
+    }
+
+    if (maximo == nullptr || cabeza->dato > maximo->dato) {
+        maximo = cabeza;
+        anteriorMaximo = anterior;
+    }
+
+    eliminarMaximoProcedimientoRecursiva(cabeza->siguiente, cabeza, maximo, anteriorMaximo);
+}
+
+/*
+Función: Retorna la nueva cabeza de la lista, en caso de que el nodo eliminado sea el primero.
+Procedimiento: Modifica directamente el puntero de la cabeza usando una referencia.
+Cada versión garantiza la eliminación y liberación de memoria del nodo que contiene el valor mínimo o máximo en la lista.
+*/
+
+// EJERCICIO G)  Eliminar todas las ocurrencias de un elemento e
+
+// g) Eliminar todas las ocurrencias de un elemento e
+//en Forma de Función (Retorna la nueva cabeza de la lista):
+// Versión Iterativa :
+
+Nodo* eliminarOcurrenciasFuncionIterativa(Nodo* cabeza, int e) {
+    while (cabeza != nullptr && cabeza->dato == e) {
+        Nodo* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        delete temp;
+    }
+
+    Nodo* actual = cabeza;
+
+    while (actual != nullptr && actual->siguiente != nullptr) {
+        if (actual->siguiente->dato == e) {
+            Nodo* temp = actual->siguiente;
+            actual->siguiente = actual->siguiente->siguiente;
+            delete temp;
+        } else {
+            actual = actual->siguiente;
+        }
+    }
+
+    return cabeza;
+}
+
+// Versión Recursiva:
+
+Nodo* eliminarOcurrenciasFuncionRecursiva(Nodo* cabeza, int e) {
+    if (cabeza == nullptr) return nullptr;
+
+    if (cabeza->dato == e) {
+        Nodo* temp = cabeza;
+        cabeza = eliminarOcurrenciasFuncionRecursiva(cabeza->siguiente, e);
+        delete temp;
+    } else {
+        cabeza->siguiente = eliminarOcurrenciasFuncionRecursiva(cabeza->siguiente, e);
+    }
+
+    return cabeza;
+}
+
+// en Forma de Procedimiento (Modifica la lista por referencia): 
+// Versión Iterativa : 
+
+void eliminarOcurrenciasProcedimientoIterativa(Nodo*& cabeza, int e) {
+    while (cabeza != nullptr && cabeza->dato == e) {
+        Nodo* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        delete temp;
+    }
+
+    Nodo* actual = cabeza;
+
+    while (actual != nullptr && actual->siguiente != nullptr) {
+        if (actual->siguiente->dato == e) {
+            Nodo* temp = actual->siguiente;
+            actual->siguiente = actual->siguiente->siguiente;
+            delete temp;
+        } else {
+            actual = actual->siguiente;
+        }
+    }
+}
+
+// Versión Recursiva:
+
+void eliminarOcurrenciasProcedimientoRecursiva(Nodo*& cabeza, int e) {
+    if (cabeza == nullptr) return;
+
+    if (cabeza->dato == e) {
+        Nodo* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        delete temp;
+        eliminarOcurrenciasProcedimientoRecursiva(cabeza, e);
+    } else {
+        eliminarOcurrenciasProcedimientoRecursiva(cabeza->siguiente, e);
+    }
+}
+
+/*
+Función: Retorna la nueva cabeza de la lista, en caso de que el elemento eliminado esté al inicio.
+Procedimiento: Modifica directamente el puntero de la cabeza usando una referencia, eliminando todas las ocurrencias del elemento e.
+Cada versión garantiza que todas las ocurrencias de e se eliminan, liberando la memoria de los nodos correspondientes.
+*/
+
+

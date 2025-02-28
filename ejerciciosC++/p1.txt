@@ -1,0 +1,293 @@
+/*
+Objetivos
+ Presentar el lenguaje C y C++.
+ Introducir conceptos de dirección de memoria, pasaje de parámetros en C y C++.
+ Presentar procesos secuenciales de datos.
+ Repasar estructuras de control y arreglos en C/C++.
+Introducir los conceptos de programación estructurada, pre y pos condiciones, casos de prueba y
+estudio empírico de la velocidad de crecimiento del tiempo de corrida
+*/ 
+
+/*
+ejercicio
+a) Leer n números (n será ingresado inicialmente por pantalla) e indicar su promedio, la
+cantidad de números pares, cantidad de múltiplos de 3.
+b) Ídem pero para una serie de números terminada por 0. ¿Qué hubo que cambiar?
+*/  
+
+//solucion: Función promYMult
+//Esta función calcula el promedio, la cantidad de múltiplos de 2 y de 3 de n números ingresados por el usuario. La cantidad n se obtiene al inicio.
+
+void promYMulta() {
+    int n, nro, i, cantMult2, cantMult3, suma;
+    
+    // Leer el número total de valores a procesar
+    n = obtenerNro("Ingresar la cantidad de numeros a leer: ");
+    
+    // Inicialización de variables antes del bucle
+    for (i = 0, suma = 0, cantMult2 = 0, cantMult3 = 0; i < n; i++) {
+        // Leer cada número ingresado
+        nro = obtenerNro("Ingresar numero: ");
+        
+        // Contar si el número es múltiplo de 2
+        if (esMult2(nro)) cantMult2++;
+        
+        // Contar si el número es múltiplo de 3
+        if (esMult3(nro)) cantMult3++;
+        
+        // Acumular la suma de los números ingresados
+        suma += nro;
+    }
+
+    // Mostrar el promedio y las cantidades de múltiplos solo si se ingresaron números
+    if (n > 0) {
+        cout << "PROMEDIO: " << (float) suma / n << "\n";
+        cout << "CANTIDAD DE MULTIPLOS DE 2: " << cantMult2 << "\n";
+        cout << "CANTIDAD DE MULTIPLOS DE 3: " << cantMult3 << "\n";
+    }
+}
+
+
+/*
+Flujo del programa:
+Se pide al usuario el número total de valores a procesar (n).
+Inicializa variables: suma, cantMult2, y cantMult3 para almacenar la suma, la cantidad de múltiplos de 2 y de 3 respectivamente.
+Ejecuta un bucle for que se repite n veces.
+En cada iteración, obtiene un número (nro) y verifica si es múltiplo de 2 o 3 mediante las funciones esMult2 y esMult3.
+Acumula el valor en suma.
+Finalmente, calcula y muestra el promedio, así como las cantidades de múltiplos de 2 y de 3, siempre y cuando n > 0.
+*/ 
+
+//solucion de la Función promYMultb
+//Esta función es similar a promYMulta, pero en lugar de un número fijo de valores, lee una serie de números hasta que el usuario ingresa 0.
+
+void promYMultb () {
+    int cant, nro, cantMult2, cantMult3, suma;
+    
+    // Leer el primer número
+    nro = obtenerNro("Ingresar numero: ");
+    
+    // Inicialización de variables antes del bucle
+    for (cant = 0, suma = 0, cantMult2 = 0, cantMult3 = 0; nro != 0; cant++) {
+        // Contar si el número es múltiplo de 2
+        if (esMult2(nro)) cantMult2++;
+        
+        // Contar si el número es múltiplo de 3
+        if (esMult3(nro)) cantMult3++;
+        
+        // Acumular la suma de los números ingresados
+        suma += nro;
+        
+        // Leer el siguiente número
+        nro = obtenerNro("Ingresar numero: ");
+    }
+
+    // Mostrar el promedio y las cantidades de múltiplos solo si se ingresaron números
+    if (cant > 0) {
+        cout << "PROMEDIO: " << (float) suma / cant << "\n";
+        cout << "CANTIDAD DE MULTIPLOS DE 2: " << cantMult2 << "\n";
+        cout << "CANTIDAD DE MULTIPLOS DE 3: " << cantMult3 << "\n";
+    }
+}
+
+/*
+Flujo del programa:
+Inicializa variables para contar la cantidad de números (cant), la suma, y la cantidad de múltiplos de 2 y 3.
+Empieza el bucle for donde cada número es leído hasta que el usuario ingresa 0.
+En cada iteración, verifica si el número es múltiplo de 2 o de 3 y actualiza las variables correspondientes.
+Cuando el usuario ingresa 0, el bucle finaliza.
+Calcula y muestra el promedio y la cantidad de múltiplos solo si se ingresaron números válidos.
+*/ 
+
+/*
+Diferencias entre promYMulta y promYMultb 
+promYMulta procesa un número fijo de valores (con n especificado al principio), usando un bucle for controlado por n.
+promYMultb  procesa una secuencia indefinida de números hasta que se ingresa 0,
+ lo cual requiere cambiar el control del bucle para verificar el valor ingresado en cada iteración.
+*/
+
+
+//Funciones auxiliares esMult2 y esMult3
+//Estas funciones ayudan a verificar si un número es múltiplo de 2 o de 3
+
+int esMult2(int n) {
+    return (n % 2 == 0);
+}
+
+int esMult3(int n) {
+    return (n % 3 == 0);
+}
+
+//esMult2: Retorna true si el número n es divisible por 2.
+//esMult3: Retorna true si el número n es divisible por 3.
+
+// tema: Aritmética de Direcciones
+
+// ejercicio: Hacer una función que intercambie el contenido de dos variables enteras recibidas como parámetro.
+
+//solucion: Función intercambio con punteros
+//Esta función recibe dos punteros a enteros como parámetros y usa estos punteros para intercambiar los valores de las variables apuntadas.
+
+void intercambio(int *n1, int *n2) {
+    int aux;        // Variable auxiliar para realizar el intercambio
+    aux = *n1;      // Guardamos el valor apuntado por n1 en aux
+    *n1 = *n2;      // Asignamos el valor apuntado por n2 a la posición apuntada por n1
+    *n2 = aux;      // Asignamos el valor de aux a la posición apuntada por n2
+}
+
+/*
+Punteros como parámetros: Los parámetros n1 y n2 son punteros a int, lo que permite que la función acceda y modifique directamente los valores de las variables que se pasan.
+Intercambio:
+Primero, almacena el valor al que apunta n1 en una variable temporal aux.
+Luego, asigna el valor al que apunta n2 a la posición de memoria que n1 apunta.
+Finalmente, asigna el valor de aux a la posición de memoria que n2 apunta.
+Esta técnica permite que el intercambio afecte a las variables originales que se pasaron a la función.
+
+Función intercambioMain
+Esta función principal se encarga de:
+
+Pedir al usuario dos números enteros.
+Llamar a la función intercambio para intercambiar los valores de estos dos números.
+Mostrar los valores después del intercambio.
+*/
+
+void intercambioMain() {
+    int nro1, nro2;
+
+    // Leer dos números del usuario
+    nro1 = obtenerNro("Ingrese el primer nro: ");
+    nro2 = obtenerNro("Ingrese el segundo nro: ");
+
+    // Llamar a la función intercambio pasándole las direcciones de nro1 y nro2
+    intercambio(&nro1, &nro2);
+
+    // Imprimir los valores después del intercambio
+    cout << "El primer número almacenado es: " << nro1 << "\n";
+    cout << "El segundo número almacenado es: " << nro2 << "\n\n";
+}
+
+/*
+Explicación de intercambioMain
+Lectura de valores: nro1 y nro2 obtienen valores ingresados por el usuario a través de la función obtenerNro.
+Paso de punteros: Se llama a intercambio, pasando las direcciones de nro1 y nro2 con el operador &.
+ Esto convierte nro1 y nro2 en punteros dentro de la función intercambio, lo cual permite modificar sus valores directamente.
+Impresión de resultados:
+ Después de la llamada a intercambio, se imprimen los valores de nro1 y nro2 para confirmar que el intercambio se realizó correctamente.
+*/
+
+/*
+comentario: para resolver este ejercicio podria haber utilizado referencias en lugar de utilizar punteros.
+ En C++, ambos métodos logran el mismo resultado, pero el uso de punteros es una alternativa más cercana a C 
+y requiere un manejo explícito de las direcciones de memoria (& y *).
+*/
+
+//tema: Arreglos y matrices
+
+//ejercicio: 
+// a) Escriba una función int maximoDelVector (vector v) que devuelve el máximo encontrado dentro del vector v.
+// b) Escriba una función int posicionDelMaximoDelVector (vector v) que devuelve la posición del máximo encontrado dentro del vector v.
+
+//solucion:  Función maximoDelVector
+
+int maximoDelVector(int v[], int t) {
+    int i, maximo = v[0];
+    for (i = 1; i < t; i++) {
+        if (v[i] > maximo) {
+            maximo = v[i];
+        }
+    }
+    return maximo;
+}
+
+/*
+Explicación:
+Parámetros:
+
+int v[]: Un arreglo de enteros que contiene los valores a evaluar.
+int t: Un entero que representa el tamaño del arreglo (número de elementos).
+Inicialización:
+
+Se inicializa la variable maximo con el primer elemento del arreglo v[0].
+Bucle:
+
+Comienza desde el segundo elemento (i = 1) hasta el último (i < t).
+Si el elemento actual v[i] es mayor que maximo, se actualiza maximo con el valor de v[i].
+Resultado:
+
+Al final del bucle, la función devuelve el valor máximo encontrado en el arreglo.
+*/
+
+
+// Función maximoDelVectorMain
+void maximoDelVectorMain() {
+    int v[] = {10, 2, 3, 5, 13, 11, 20, 19, 15, 0};
+    int max = maximoDelVector(v, N);
+    muestroVec(v, N);
+    cout << "El maximo es: " << max << "\n\n";
+}
+
+/*
+Explicación:
+Vector de Enteros: Define un arreglo v con diez elementos.
+Llamada a maximoDelVector: Llama a la función maximoDelVector pasando el arreglo v y su tamaño N (se asume que N es definido en otra parte del código como 10).
+Mostrar Vector: Llama a muestroVec(v, N) (presumiblemente una función que imprime los elementos del vector v).
+Resultado: Imprime el máximo encontrado en el vector.
+*/
+
+//Función posicionDelMaximoDelVector
+
+int posicionDelMaximoDelVector(int v[], int t) {
+    int i, posicion = 0;
+    for (i = 0; i < t; i++) {
+        if (v[i] > v[posicion]) {
+            posicion = i;
+        }
+    }
+    return posicion;
+}
+
+/*
+Explicación:
+Parámetros: Similar a maximoDelVector, recibe un arreglo v y su tamaño t.
+Inicialización: posicion se inicializa en 0, que corresponde al primer índice del vector.
+Bucle: Recorre todos los elementos del vector. Si encuentra un elemento que es mayor que el elemento en v[posicion],
+ actualiza posicion con el índice del nuevo máximo.
+Resultado: Devuelve la posición del elemento máximo en el arreglo.
+*/
+
+//Función posMaxVec
+void posMaxVec() {
+    int v[] = {10, 2, 3, 5, 13, 11, 20, 19, 15, 0};
+    int pos = posicionDelMaximoDelVector(v, N);
+    muestroVec(v, N);
+    cout << "La posicion es: " << pos << "\n\n";
+}
+
+/*
+Explicación:
+Vector de Enteros: Define un arreglo v como en ejercicio16a.
+Llamada a posicionDelMaximoDelVector: Obtiene la posición del valor máximo en el arreglo.
+Mostrar Vector: Llama a muestroVec(v, N) para mostrar los elementos del vector.
+Resultado: Imprime la posición del valor máximo encontrado.
+*/
+
+// Función posMinVec 
+int posMinVec(int v[], int t) {
+    int i, posicion = 0;
+    for (i = 0; i < t; i++) {
+        if (v[i] < v[posicion]) {
+            posicion = i;
+        }
+    }
+    return posicion;
+}
+
+/*
+Resumen
+Funciones de búsqueda: Se han implementado funciones para encontrar tanto el valor máximo como la posición del máximo en un arreglo de enteros.
+Uso de bucles: Las funciones utilizan bucles for para iterar sobre los elementos del arreglo.
+Uso de parámetros: Todas las funciones son flexibles, ya que pueden trabajar con cualquier arreglo de enteros y su tamaño.
+Mostrar resultados: Cada ejercicio muestra el vector y el resultado correspondiente, proporcionando una experiencia completa para el usuario.
+*/
+
+

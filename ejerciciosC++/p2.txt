@@ -1,0 +1,295 @@
+Tema: Recursividad
+Objetivos:
+• Comprender el funcionamiento de los programas recursivos, el papel de los parámetros pasados por
+valor, por referencia y las variables locales.
+• Ejercitarse en el cálculo del tiempo de ejecución de los algoritmos recursivos.
+
+
+ /*
+ejercicio:
+ Defina una función recursiva int busco(VEC,izq,der N,dato) que
+retorna la posición ocupada por dato sobre el array VEC entre las
+posiciones izq y der de vec o –1 si no se encuentra el dato.
+*/ 
+
+//solucion 1:
+// implemento una función recursiva llamada busco en C++. La función buscará un valor dato en un subrango de un arreglo VEC entre las posiciones izq y der.
+// Si el valor está en el rango especificado, devolverá su posición; si no se encuentra, devolverá -1.
+
+#include <iostream>
+using namespace std;
+
+int busco(int VEC[], int izq, int der, int dato) {
+    // Caso base: si el índice izquierdo supera al derecho, el elemento no está en el array
+    if (izq > der) {
+        return -1;
+    }
+
+    // Verificar si el elemento en la posición `izq` es el buscado
+    if (VEC[izq] == dato) {
+        return izq; // Retorna la posición si el elemento fue encontrado
+    }
+
+    // Llamada recursiva avanzando en la búsqueda desde la siguiente posición
+    return busco(VEC, izq + 1, der, dato);
+}
+
+int main() {
+    int VEC[] = {3, 5, 7, 9, 11, 13}; // Vector de ejemplo
+    int N = sizeof(VEC) / sizeof(VEC[0]); // Tamaño del array
+    int dato = 9; // Valor a buscar
+
+    int posicion = busco(VEC, 0, N - 1, dato); // Llamada a la función con el rango completo
+
+    if (posicion != -1) {
+        cout << "El elemento " << dato << " se encuentra en la posición: " << posicion << endl;
+    } else {
+        cout << "El elemento " << dato << " no se encuentra en el array." << endl;
+    }
+
+    return 0;
+}
+
+
+ /*
+Explicación del Código:
+Función busco:
+Parámetros:
+VEC[]: el arreglo en el que se busca el dato.
+izq: posición inicial del rango de búsqueda.
+der: posición final del rango de búsqueda.
+dato: el valor que queremos encontrar.
+Caso base: si izq es mayor que der, significa que hemos revisado todo el subrango sin encontrar el dato, por lo que retornamos -1.
+Condición de éxito: si VEC[izq] == dato, el valor se ha encontrado en la posición izq, y esta posición es retornada.
+Paso recursivo: si el dato no se encuentra en la posición izq, se llama recursivamente a busco incrementando izq en 1 (avanzando en el array).
+Función main:
+
+Declara un array VEC y el valor dato a buscar.
+Llama a busco con el rango completo del array.
+Imprime el resultado indicando si el valor fue encontrado y en qué posición, o si no se encuentra en el array.
+
+*/ 
+
+//solucion 2:
+//Esta solución incluye dos enfoques para buscar un elemento e en un array v[] entre los índices inf y sup:
+
+//Solución lineal
+int bLineal(int v[], int e, int inf, int sup){
+	if (inf <= sup){
+		if (v[inf] == e) return inf;
+		else return bLineal(v, e, inf + 1, sup);
+}
+return -1;
+}
+//Solución que aplica dividir para conquistar
+int bDivConq (int v[], int e, int inf, int sup){
+	int mid, esta1, esta2;
+	if (inf <= sup){
+		mid = (inf + sup)/2;
+		if (v[mid] == e) return mid;
+		else{
+			esta1 = bLineal(v, e, inf , mid - 1);
+			esta2 = bLineal(v, e, mid + 1, sup);
+			if (esta1 != -1) return esta1;
+			if (esta2 != -1) return esta2;
+			return -1;
+		  }
+		}
+return -1;
+}
+
+/*
+Búsqueda lineal (función bLineal):
+Este enfoque utiliza una búsqueda secuencial simple, revisando cada elemento desde inf hasta sup.
+Lógica de la función bLineal:
+Verifica si el índice inf está dentro del rango (inf <= sup). Si no es así, significa que no hay elementos por buscar y retorna -1.
+Si el elemento en v[inf] es igual a e, la función retorna inf, que es la posición donde se encontró el elemento.
+Si v[inf] no es igual a e, se llama recursivamente a bLineal incrementando inf en 1 para verificar el siguiente elemento.
+Si llega al final sin encontrar el elemento, retorna -1.
+Complejidad: Esta solución es O(n) en el peor de los casos, ya que podría tener que verificar todos los elementos del array.
+Dividir y conquistar (función bDivConq):
+Este enfoque utiliza una técnica de "divide y vencerás". Divide el array en dos mitades y busca en ambas, pero usa la búsqueda lineal en cada subparte.
+Lógica de la función bDivConq:
+Primero verifica si inf es menor o igual a sup. Si no es así, retorna -1 porque no hay elementos en el rango.
+Calcula el índice medio mid como (inf + sup) / 2.
+Si el valor en v[mid] es igual a e, se retorna mid, que es la posición donde se encontró el elemento.
+Si v[mid] no es igual a e, divide la búsqueda en dos subrangos:
+bLineal(v, e, inf, mid - 1): busca en la mitad izquierda del rango.
+bLineal(v, e, mid + 1, sup): busca en la mitad derecha del rango.
+Si esta1 o esta2 (resultados de las búsquedas en los subrangos) contienen una posición válida, retorna esa posición. Si ambos son -1, retorna -1 indicando que no encontró el elemento.
+Complejidad:
+Aunque usa "divide y vencerás", el enfoque sigue siendo lineal debido al uso de bLineal en cada mitad. Esto hace que la complejidad también sea O(n).
+
+*/ 
+
+
+//ejercicio:  Implemente una versión mejorada en el supuesto de que los elementos de VEC se encuentran ordenados y calcule su orden.
+//solucion:
+
+/*
+Dado que el arreglo VEC está ordenado, una mejora sería implementar una búsqueda binaria en lugar de una búsqueda lineal, ya que esto reduce la complejidad de 
+O(n) a  O(log n).
+En este caso, la búsqueda binaria puede dividir el rango de búsqueda a la mitad en cada llamada recursiva, acelerando considerablemente la localización del dato si existe
+
+*/ 
+
+
+#include <iostream>
+using namespace std;
+
+int busco(int VEC[], int izq, int der, int dato) {
+    // Caso base: si el índice izquierdo supera al derecho, el elemento no está en el array
+    if (izq > der) {
+        return -1;
+    }
+
+    // Calcular el índice medio del rango actual
+    int medio = izq + (der - izq) / 2;
+
+    // Si el elemento en la posición `medio` es el dato, retornar la posición
+    if (VEC[medio] == dato) {
+        return medio;
+    }
+
+    // Si el elemento medio es mayor que el dato, buscar en la mitad izquierda
+    if (VEC[medio] > dato) {
+        return busco(VEC, izq, medio - 1, dato);
+    }
+
+    // Si el elemento medio es menor que el dato, buscar en la mitad derecha
+    return busco(VEC, medio + 1, der, dato);
+}
+
+int main() {
+    int VEC[] = {3, 5, 7, 9, 11, 13}; // Vector de ejemplo (ordenado)
+    int N = sizeof(VEC) / sizeof(VEC[0]); // Tamaño del array
+    int dato = 9; // Valor a buscar
+
+    int posicion = busco(VEC, 0, N - 1, dato); // Llamada a la función con el rango completo
+
+    if (posicion != -1) {
+        cout << "El elemento " << dato << " se encuentra en la posición: " << posicion << endl;
+    } else {
+        cout << "El elemento " << dato << " no se encuentra en el array." << endl;
+    }
+
+    return 0;
+}
+
+
+/*  
+explicacion:
+División del problema: la función recursiva divide el array en mitades hasta encontrar el valor o llegar a un caso base.
+Complejidad: el uso de la búsqueda binaria mejora la complejidad de 
+O(n) a O(log n), lo cual es significativamente más rápido en arreglos grandes.
+Casos base:
+Si izq > der, significa que el valor no está en el array y retorna -1.
+Si VEC[medio] es igual a dato, la función retorna medio como la posición encontrada.
+
+*/ 
+
+
+// ejercicio:  Desarrollar una función que reciba un array y que retorne la posición del mínimo elemento.
+// solucion: La función posMinimo implementa una búsqueda recursiva para encontrar la posición del mínimo elemento en un arreglo v entre los índices inf y sup. 
+//La función recurre hacia el final del arreglo, compara los elementos y luego regresa con la posición del elemento mínimo.
+
+int posMinimo(int v[], int inf, int sup) {
+    int min;
+
+    // Caso base: si los índices inferior y superior son iguales, se ha llegado a un único elemento
+    if (inf == sup) return inf;
+
+    // Llamada recursiva: encontrar el mínimo en el subarreglo que comienza en inf + 1
+    if ((v[min = posMinimo(v, inf + 1, sup)]) < v[inf]) {
+        return min; // Si el elemento en la posición `min` es menor que `v[inf]`, retorna `min`
+    } else {
+        return inf; // Si `v[inf]` es menor o igual, retorna `inf` como el índice del mínimo
+    }
+}
+
+/*
+Caso base: if (inf == sup) return inf;
+
+Cuando inf es igual a sup, significa que se ha reducido el rango a un solo elemento. En este caso, se retorna inf, que es la posición de este elemento.
+Llamada recursiva: min = posMinimo(v, inf + 1, sup);
+
+La función llama a sí misma con el subrango (inf + 1, sup). Esta llamada avanza la búsqueda hacia el final del arreglo.
+min se establece como la posición del mínimo elemento encontrado en el subarreglo desde inf + 1 hasta sup.
+Comparación entre elementos:
+
+if ((v[min = posMinimo(v, inf + 1, sup)]) < v[inf]):
+Si el elemento en la posición min (el mínimo en el subarreglo (inf + 1, sup)) es menor que v[inf], entonces min es la posición del mínimo en el rango (inf, sup), y se retorna.
+else return inf;
+Si v[inf] es menor o igual al mínimo encontrado en el subarreglo (inf + 1, sup), entonces inf es la posición del mínimo en el rango (inf, sup), y se retorna.
+
+La complejidad temporal de esta función es 
+O(n), ya que hace una llamada recursiva para cada elemento del arreglo.
+
+*/ 
+
+//ejercicio: usando el ejercicio anterior, implemente una función recursiva que ordene un array.
+
+
+/*
+para esta solucion voy a usar una función recursiva para ordenar un arreglo utilizando el algoritmo Selection Sort.
+ La idea central es encontrar el elemento mínimo en el subarreglo que va desde el índice inf hasta sup, luego intercambiarlo con el elemento en la posición inf,
+ y finalmente repetir este proceso recursivamente para el resto del arreglo.
+*/
+
+int posMinimo(int v[], int inf, int sup); // Declaración de la función que encuentra el mínimo
+int intercambio(int* a, int* b); // Declaración de la función que intercambia dos elementos
+
+void ordenar(int v[], int inf, int sup) {
+    int posMin;
+
+    // Caso base: si `inf` es igual o mayor que `sup`, el arreglo está ordenado
+    if (inf < sup) {
+        // Encontrar la posición del mínimo elemento en el subarreglo `v[inf]` a `v[sup]`
+        posMin = posMinimo(v, inf, sup);
+
+        // Intercambiar el elemento en `inf` con el mínimo encontrado
+        intercambio(&v[inf], &v[posMin]);
+
+        // Llamada recursiva para ordenar el resto del arreglo (desde `inf + 1` hasta `sup`)
+        ordenar(v, inf + 1, sup);
+    }
+}
+
+void intercambio(int *a, int *b) {
+    int aux;
+    aux = *a;
+    *a = *b;
+    *b = aux;
+}
+
+/*
+explicacion:
+posMinimo(int v[], int inf, int sup):
+
+Esta función, que no se detalla en el código proporcionado, debe devolver la posición del elemento mínimo en el subarreglo desde inf hasta sup. Es una función auxiliar que busca el índice donde se encuentra el menor elemento en el rango indicado.
+void ordenar(int v[], int inf, int sup):
+
+Esta es la función principal de ordenación.
+Caso base: if (inf < sup).
+Si inf no es menor que sup, significa que hemos alcanzado el final del arreglo o que solo queda un elemento, por lo que no hay más elementos que ordenar, y la recursión termina.
+Encontrar el mínimo: posMin = posMinimo(v, inf, sup);
+Llama a posMinimo para encontrar la posición del elemento mínimo en el subarreglo v[inf] a v[sup].
+Intercambio: intercambio(&v[inf], &v[posMin]);
+Intercambia el elemento en la posición inf con el elemento mínimo encontrado en el subarreglo, usando la función intercambio.
+Llamada recursiva: ordenar(v, inf + 1, sup);
+Llama a ordenar de forma recursiva para ordenar el resto del arreglo, avanzando inf en 1 para procesar el siguiente subarreglo, desde inf + 1 hasta sup.
+void intercambio(int *a, int *b):
+
+Esta función toma dos punteros a y b y realiza el intercambio de los valores a los que apuntan.
+Utiliza una variable auxiliar aux para almacenar temporalmente el valor de *a, asigna el valor de *b a *a, y luego asigna aux a *b, completando el intercambio.
+
+*/
+
+//La complejidad de esta implementación es O(n ^ 2), debido a que se realizan n llamadas recursivas, y cada una implica una búsqueda lineal en el subarreglo.
+
+
+
+
+
+
+
